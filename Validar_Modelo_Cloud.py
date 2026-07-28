@@ -92,7 +92,11 @@ def gravar_planilha(data, filepath):
         
     for row_idx, item in enumerate(data, 2):
         model_id = item.get("ID", "")
-        link_id = f"https://www.logcte.com.br/ModeloCte/Editar?id={model_id}" if model_id else ""
+        if model_id:
+            url = f"https://www.logcte.com.br/ModeloCte/Editar?id={model_id}"
+            link_id = f'=HYPERLINK("{url}", "{url}")'
+        else:
+            link_id = ""
         row_data = [
             link_id, item.get("Nome", ""), item.get("Emissor", ""), item.get("Remetente", ""),
             item.get("Destinatario", ""), item.get("Expedidor", ""), item.get("Recebedor", ""),
