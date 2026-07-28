@@ -43,14 +43,18 @@ def do_login(driver, wait, email, password):
         password_field.clear()
         password_field.send_keys(password)
         
-        btn_login = driver.find_element(By.CSS_SELECTOR, "button.btn-primary")
-        btn_login.click()
+        try:
+            submit = driver.find_element(By.XPATH, "//*[self::button or self::input][contains(.,'Entrar') or contains(.,'Acessar')] | //button[@type='submit']")
+            driver.execute_script("arguments[0].click();", submit)
+        except:
+            password_field.send_keys(Keys.ENTER)
         
         time.sleep(5)
         log("Login submetido.")
     except Exception as e:
         log(f"Falha ao realizar login: {e}")
         driver.quit()
+        import sys
         sys.exit(1)
 
 def gravar_planilha(data, filepath):
