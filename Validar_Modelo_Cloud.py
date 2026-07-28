@@ -94,7 +94,7 @@ def gravar_planilha(data, filepath):
         model_id = item.get("ID", "")
         if model_id:
             url = f"https://www.logcte.com.br/ModeloCte/Editar?id={model_id}"
-            link_id = f'=HYPERLINK("{url}", "{url}")'
+            link_id = f'=HYPERLINK("{url}", "id={model_id}")'
         else:
             link_id = ""
         row_data = [
