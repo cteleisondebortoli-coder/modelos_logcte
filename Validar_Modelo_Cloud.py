@@ -10,7 +10,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
@@ -29,9 +28,8 @@ def start_driver():
     opts.add_argument("--disable-dev-shm-usage")
     opts.add_argument("--window-size=1920,1080")
     
-    # In a real GitHub Actions environment, ChromeDriverManager automatically downloads the right binary
-    service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=opts)
+    # O Selenium 4.6+ já possui o Selenium Manager embutido, não precisamos mais do ChromeDriverManager
+    driver = webdriver.Chrome(options=opts)
     return driver
 
 def do_login(driver, wait, email, password):
@@ -52,6 +50,8 @@ def do_login(driver, wait, email, password):
         log("Login submetido.")
     except Exception as e:
         log(f"Falha ao realizar login: {e}")
+        driver.quit()
+        sys.exit(1)
 
 def gravar_planilha(data, filepath):
     wb = Workbook()
